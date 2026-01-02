@@ -1,0 +1,258 @@
+.page {
+  min-height: 100vh;
+  background: #252635;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+}
+
+.shell {
+  width: min(1220px, 100%);
+  background: #2a2a3b;
+  border-radius: 18px;
+  padding: 26px;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 28px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.hero {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: 640px;
+  background-size: cover;
+  background-position: center;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(1200px 700px at 30% 10%, rgba(255,255,255,0.2), transparent 60%),
+    linear-gradient(to top, rgba(20,20,30,0.88), rgba(20,20,30,0.10));
+}
+
+.heroLogo {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 2;
+  font-weight: 900;
+  font-size: 38px;
+  letter-spacing: 1px;
+  color: #7b71ff;
+  font-style: italic;
+}
+
+.backBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.90);
+  text-decoration: none;
+  backdrop-filter: blur(10px);
+  font-size: 14px;
+}
+
+.heroHeadline {
+  position: absolute;
+  left: 54px;
+  bottom: 108px;
+  z-index: 2;
+  font-size: 36px;
+  line-height: 1.15;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.heroDots {
+  position: absolute;
+  left: 54px;
+  bottom: 54px;
+  z-index: 2;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.dot {
+  width: 56px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.dotActive {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.formArea {
+  display: grid;
+  align-items: center;
+  padding: 12px 6px;
+}
+
+.formWrap {
+  width: 100%;
+  max-width: 520px;
+  margin-left: 8px;
+}
+
+.title {
+  margin: 0 0 10px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 64px;
+  line-height: 1.02;
+}
+
+.subtitle {
+  margin: 0 0 30px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 14px;
+}
+
+.link {
+  color: #8f86ff;
+  text-decoration: none;
+}
+
+.form {
+  display: grid;
+  gap: 18px;
+}
+
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.input {
+  height: 52px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.88);
+  padding: 0 16px;
+  outline: none;
+  font-size: 16px;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.24);
+}
+
+.input:focus {
+  border-color: rgba(143, 134, 255, 0.65);
+  box-shadow: 0 0 0 4px rgba(143, 134, 255, 0.12);
+}
+
+.checkboxRow {
+  display: inline-flex;
+  gap: 12px;
+  align-items: center;
+  user-select: none;
+  color: rgba(255, 255, 255, 0.70);
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #8f86ff;
+}
+
+.primaryBtn {
+  height: 56px;
+  border-radius: 10px;
+  border: 0;
+  background: #6f65ff;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.socialRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 6px;
+}
+
+.socialBtn {
+  height: 52px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.86);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.gMark {
+  font-weight: 800;
+}
+
+.divider {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 14px;
+  margin-top: 2px;
+}
+
+.dividerLine {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.dividerText {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+@media (max-width: 1080px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+  .hero {
+    min-height: 420px;
+  }
+  .title {
+    font-size: 52px;
+  }
+  .formWrap {
+    margin-left: 0;
+    max-width: 620px;
+  }
+}
+
+@media (max-width: 560px) {
+  .page {
+    padding: 14px;
+  }
+  .shell {
+    padding: 16px;
+  }
+  .row2 {
+    grid-template-columns: 1fr;
+  }
+  .title {
+    font-size: 44px;
+  }
+}
