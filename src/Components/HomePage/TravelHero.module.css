@@ -1,0 +1,523 @@
+.page {
+    min-height: 100vh;
+    background: radial-gradient(900px 520px at 18% 55%, rgba(255, 188, 188, 0.24), transparent 60%),
+      radial-gradient(900px 520px at 58% 18%, rgba(208, 232, 255, 0.26), transparent 62%),
+      #ffffff;
+    color: #0f172a;
+  }
+  
+  .nav {
+    height: 74px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 34px;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
+  
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+  }
+  
+  .logoMark {
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    background: #4f46e5;
+    position: relative;
+  }
+  
+  .logoMark::after {
+    content: "";
+    position: absolute;
+    inset: 9px 13px;
+    border-radius: 999px;
+    background: #ffffff;
+    opacity: 0.9;
+  }
+  
+  .brandText {
+    font-size: 22px;
+  }
+  
+  .navLeft {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    margin-left: 26px;
+  }
+  
+  .navRight {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .navSelect {
+    border: 0;
+    background: transparent;
+    color: rgba(15, 23, 42, 0.72);
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 10px 12px;
+    border-radius: 999px;
+  }
+  
+  .navSelect:hover {
+    background: rgba(15, 23, 42, 0.04);
+  }
+  
+  .chev {
+    font-size: 12px;
+    opacity: 0.75;
+  }
+  
+  .iconBtn {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    border: 0;
+    background: rgba(15, 23, 42, 0.04);
+    cursor: pointer;
+  }
+  
+  .primaryPill {
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    background: #ffffff;
+    padding: 10px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  
+  .avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.18), rgba(15, 23, 42, 0.05));
+    border: 1px solid rgba(15, 23, 42, 0.10);
+  }
+  
+  .main {
+    width: min(1180px, calc(100% - 64px));
+    margin: 0 auto;
+    padding: 54px 0 90px;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 38px;
+    position: relative;
+  }
+  
+  .left {
+    padding-top: 44px;
+  }
+  
+  .h1 {
+    font-size: 74px;
+    line-height: 0.95;
+    letter-spacing: -2.2px;
+    margin: 0;
+  }
+  
+  .lead {
+    margin: 22px 0 26px;
+    font-size: 18px;
+    color: rgba(15, 23, 42, 0.62);
+    max-width: 520px;
+  }
+  
+  .cta {
+    border: 0;
+    background: #0f172a;
+    color: #ffffff;
+    padding: 14px 20px;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  
+  .right {
+    display: grid;
+    align-items: start;
+    justify-items: end;
+  }
+  
+  .collage {
+    width: min(560px, 100%);
+    height: 460px;
+    border-radius: 18px;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+  }
+  
+  .searchDock {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: translateY(44px);
+  }
+  
+  .tabs {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding-left: 14px;
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+  
+  .tab {
+    border: 0;
+    background: transparent;
+    color: rgba(15, 23, 42, 0.56);
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 999px;
+  }
+  
+  .tabDot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.18);
+  }
+  
+  .tabActive {
+    color: rgba(15, 23, 42, 0.92);
+  }
+  
+  .tabActive .tabDot {
+    background: rgba(15, 23, 42, 0.88);
+  }
+  
+  .searchBar {
+    height: 74px;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 18px 60px rgba(15, 23, 42, 0.14);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    display: grid;
+    grid-template-columns: 1.2fr 16px 1.1fr 16px 0.9fr 84px;
+    align-items: center;
+    padding: 10px 12px 10px 16px;
+  }
+  
+  .field {
+    display: grid;
+    gap: 6px;
+    padding: 4px 10px;
+  }
+  
+  .fieldHead {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(15, 23, 42, 0.78);
+    font-weight: 800;
+    font-size: 14px;
+  }
+  
+  .fieldIcon {
+    opacity: 0.55;
+  }
+  
+  .fieldTitle {
+    white-space: nowrap;
+  }
+  
+  .fieldInput {
+    border: 0;
+    outline: none;
+    font-size: 14px;
+    color: rgba(15, 23, 42, 0.62);
+    background: transparent;
+    padding: 0;
+  }
+  
+  .vline {
+    width: 1px;
+    height: 46px;
+    background: rgba(15, 23, 42, 0.10);
+    justify-self: center;
+  }
+  
+  .searchBtn {
+    width: 66px;
+    height: 66px;
+    border-radius: 999px;
+    border: 0;
+    cursor: pointer;
+    background: #4f46e5;
+    color: #ffffff;
+    font-size: 18px;
+    display: grid;
+    place-items: center;
+    justify-self: end;
+  }
+  
+  .locationWrap {
+    position: relative;
+  }
+  
+  .suggestPanel {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 0;
+    width: 640px;
+    max-width: 72vw;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 30px 90px rgba(15, 23, 42, 0.18);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    overflow: hidden;
+    z-index: 50;
+  }
+  
+  .suggestTitle {
+    padding: 18px 20px;
+    font-weight: 700;
+    color: rgba(15, 23, 42, 0.62);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  }
+  
+  .suggestList {
+    padding: 10px 8px;
+    display: grid;
+    gap: 6px;
+  }
+  
+  .suggestItem {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 14px;
+    border-radius: 14px;
+    cursor: pointer;
+    text-align: left;
+  }
+  
+  .suggestItem:hover {
+    background: rgba(79, 70, 229, 0.06);
+  }
+  
+  .suggestIcon {
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: rgba(15, 23, 42, 0.04);
+    color: rgba(15, 23, 42, 0.65);
+  }
+  
+  .suggestText {
+    font-weight: 800;
+    font-size: 18px;
+    color: rgba(15, 23, 42, 0.88);
+  }
+  
+  .suggestEmpty {
+    padding: 16px 18px;
+    color: rgba(15, 23, 42, 0.55);
+    font-weight: 600;
+  }
+  
+  @media (max-width: 980px) {
+    .main {
+      grid-template-columns: 1fr;
+      padding-bottom: 140px;
+    }
+  
+    .right {
+      justify-items: start;
+    }
+  
+    .h1 {
+      font-size: 58px;
+    }
+  
+    .searchDock {
+      transform: translateY(60px);
+    }
+  
+    .searchBar {
+      grid-template-columns: 1fr;
+      height: auto;
+      padding: 14px;
+      gap: 12px;
+    }
+  
+    .vline {
+      display: none;
+    }
+  
+    .searchBtn {
+      width: 100%;
+      height: 54px;
+      border-radius: 14px;
+      justify-self: stretch;
+    }
+  
+    .suggestPanel {
+      width: 100%;
+      max-width: 100%;
+      left: 0;
+      right: 0;
+    }
+  }
+  .fieldButton {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: text;
+    text-align: left;
+  }
+  
+  .fieldHint {
+    font-size: 13px;
+    color: rgba(15, 23, 42, 0.45);
+    font-weight: 600;
+  }
+  
+  .calendarWrap {
+    position: relative;
+  }
+  
+  .calendarPanel {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: -20px;
+    width: 860px;
+    max-width: 86vw;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 30px 90px rgba(15, 23, 42, 0.18);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    overflow: hidden;
+    z-index: 60;
+  }
+  
+  .calendarInner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    padding: 20px;
+  }
+  
+  .calendarMonth {
+    display: grid;
+    gap: 12px;
+  }
+  
+  .calendarHeader {
+    display: grid;
+    grid-template-columns: 36px 1fr 36px;
+    align-items: center;
+  }
+  
+  .calTitle {
+    font-weight: 800;
+    color: rgba(15, 23, 42, 0.82);
+    text-align: center;
+  }
+  
+  .calArrow {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    border: 0;
+    background: rgba(15, 23, 42, 0.04);
+    cursor: pointer;
+    font-size: 18px;
+  }
+  
+  .calArrowSpacer {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .calWeek {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    font-size: 12px;
+    color: rgba(15, 23, 42, 0.52);
+    font-weight: 700;
+    padding: 0 6px;
+  }
+  
+  .calWeek span {
+    text-align: center;
+  }
+  
+  .calGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+  
+  .calDay {
+    border: 0;
+    background: transparent;
+    height: 38px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 700;
+    color: rgba(15, 23, 42, 0.82);
+  }
+  
+  .calDay:hover {
+    background: rgba(79, 70, 229, 0.08);
+  }
+  
+  .calDayMuted {
+    color: rgba(15, 23, 42, 0.22);
+  }
+  
+  .calDayInRange {
+    background: rgba(79, 70, 229, 0.10);
+  }
+  
+  .calDayStart,
+  .calDayEnd {
+    background: #4f46e5;
+    color: #ffffff;
+  }
+  
+  @media (max-width: 980px) {
+    .calendarPanel {
+      left: 0;
+      width: 100%;
+      max-width: 100%;
+    }
+  
+    .calendarInner {
+      grid-template-columns: 1fr;
+    }
+  }
+  
