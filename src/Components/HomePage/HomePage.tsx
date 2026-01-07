@@ -37,6 +37,7 @@ function monthLabel(d: Date) {
 function buildMonthGrid(monthStart: Date): DayCell[] {
   const first = startOfMonth(monthStart);
   const start = new Date(first);
+
   const weekday = (start.getDay() + 6) % 7;
   start.setDate(start.getDate() - weekday);
 
@@ -54,20 +55,15 @@ function buildMonthGrid(monthStart: Date): DayCell[] {
 
 function formatRange(a: Date | null, b: Date | null) {
   if (!a || !b) return "";
-  const left = `${a.toLocaleString(undefined, { month: "short" })} ${pad2(
-    a.getDate()
-  )}`;
-  const right = `${b.toLocaleString(undefined, { month: "short" })} ${pad2(
-    b.getDate()
-  )}`;
+  const left = `${a.toLocaleString(undefined, { month: "short" })} ${pad2(a.getDate())}`;
+  const right = `${b.toLocaleString(undefined, { month: "short" })} ${pad2(b.getDate())}`;
   return `${left} - ${right}`;
 }
 
 export default function HomePage() {
   const [tab, setTab] = useState<Tab>("Stays");
-  const [location, setLocation] = useState("");
-  const [guests, setGuests] = useState("4 Guests");
 
+  const [location, setLocation] = useState("");
   const [locationOpen, setLocationOpen] = useState(false);
   const locationWrapRef = useRef<HTMLDivElement | null>(null);
   const locationInputRef = useRef<HTMLInputElement | null>(null);
@@ -81,10 +77,21 @@ export default function HomePage() {
   const [startDate, setStartDate] = useState<Date | null>(new Date(2025, 8, 8));
   const [endDate, setEndDate] = useState<Date | null>(new Date(2025, 8, 19));
 
-  const dateValue = useMemo(
-    () => formatRange(startDate, endDate) || "Sep 08 - Sep 19",
-    [startDate, endDate]
-  );
+  const dateValue = useMemo(() => {
+    return formatRange(startDate, endDate) || "Sep 08 - Sep 19";
+  }, [startDate, endDate]);
+
+  const [guestsOpen, setGuestsOpen] = useState(false);
+  const guestsWrapRef = useRef<HTMLDivElement | null>(null);
+
+  const [adults, setAdults] = useState(2);
+  const [children, setChildren] = useState(1);
+  const [infants, setInfants] = useState(1);
+
+  const guestsLabel = useMemo(() => {
+    const total = adults + children + infants;
+    return `${total} Guests`;
+  }, [adults, children, infants]);
 
   const suggestions = useMemo(
     () => [
@@ -107,17 +114,16 @@ export default function HomePage() {
     const onDown = (e: MouseEvent) => {
       const target = e.target as Node;
 
-      if (
-        locationWrapRef.current &&
-        !locationWrapRef.current.contains(target)
-      ) {
+      if (locationWrapRef.current && !locationWrapRef.current.contains(target)) {
         setLocationOpen(false);
       }
-      if (
-        calendarWrapRef.current &&
-        !calendarWrapRef.current.contains(target)
-      ) {
+
+      if (calendarWrapRef.current && !calendarWrapRef.current.contains(target)) {
         setCalendarOpen(false);
+      }
+
+      if (guestsWrapRef.current && !guestsWrapRef.current.contains(target)) {
+        setGuestsOpen(false);
       }
     };
 
@@ -125,11 +131,13 @@ export default function HomePage() {
       if (e.key === "Escape") {
         setLocationOpen(false);
         setCalendarOpen(false);
+        setGuestsOpen(false);
       }
     };
 
     document.addEventListener("mousedown", onDown);
     document.addEventListener("keydown", onKey);
+
     return () => {
       document.removeEventListener("mousedown", onDown);
       document.removeEventListener("keydown", onKey);
@@ -139,6 +147,8 @@ export default function HomePage() {
   const openLocation = () => {
     setLocationOpen(true);
     setCalendarOpen(false);
+    setGuestsOpen(false);
+
     requestAnimationFrame(() => {
       locationInputRef.current?.focus();
       locationInputRef.current?.select();
@@ -154,6 +164,21 @@ export default function HomePage() {
   const openCalendar = () => {
     setCalendarOpen(true);
     setLocationOpen(false);
+    setGuestsOpen(false);
+  };
+
+  const openGuests = () => {
+    setGuestsOpen(true);
+    setLocationOpen(false);
+    setCalendarOpen(false);
+  };
+
+  const dec = (setter: (v: number) => void, v: number, min: number) => {
+    setter(Math.max(min, v - 1));
+  };
+
+  const inc = (setter: (v: number) => void, v: number, max: number) => {
+    setter(Math.min(max, v + 1));
   };
 
   const pickDate = (d: Date) => {
@@ -185,10 +210,7 @@ export default function HomePage() {
   const isEnd = (d: Date) => (endDate ? sameDay(d, endDate) : false);
 
   const leftMonth = useMemo(() => buildMonthGrid(calendarBase), [calendarBase]);
-  const rightMonth = useMemo(
-    () => buildMonthGrid(addMonths(calendarBase, 1)),
-    [calendarBase]
-  );
+  const rightMonth = useMemo(() => buildMonthGrid(addMonths(calendarBase, 1)), [calendarBase]);
 
   const onSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -197,7 +219,9 @@ export default function HomePage() {
       location,
       startDate,
       endDate,
-      guests,
+      adults,
+      children,
+      infants,
     });
   };
 
@@ -220,11 +244,7 @@ export default function HomePage() {
             Templates <span className={styles.chev}>▾</span>
           </button>
 
-          <button
-            className={styles.iconBtn}
-            type="button"
-            aria-label="Language"
-          >
+          <button className={styles.iconBtn} type="button" aria-label="Language">
             🌐
           </button>
           <button className={styles.iconBtn} type="button" aria-label="Help">
@@ -235,11 +255,7 @@ export default function HomePage() {
             List your property
           </button>
 
-          <button
-            className={styles.iconBtn}
-            type="button"
-            aria-label="Notifications"
-          >
+          <button className={styles.iconBtn} type="button" aria-label="Notifications">
             🔔
           </button>
 
@@ -265,23 +281,12 @@ export default function HomePage() {
         </section>
 
         <section className={styles.right} aria-label="Gallery">
-          <div
-            className={styles.collage}
-            style={{ backgroundImage: `url(${collage})` }}
-          />
+          <div className={styles.collage} style={{ backgroundImage: `url(${collage})` }} />
         </section>
 
         <section className={styles.searchDock} aria-label="Search">
           <div className={styles.tabs}>
-            {(
-              [
-                "Stays",
-                "Cars",
-                "Experiences",
-                "RealEstates",
-                "Flights",
-              ] as Tab[]
-            ).map((t) => (
+            {(["Stays", "Cars", "Experiences", "RealEstates", "Flights"] as Tab[]).map((t) => (
               <button
                 key={t}
                 type="button"
@@ -296,17 +301,11 @@ export default function HomePage() {
 
           <form className={styles.searchBar} onSubmit={onSearch}>
             <div className={styles.locationWrap} ref={locationWrapRef}>
-              <button
-                type="button"
-                className={styles.fieldButton}
-                onClick={openLocation}
-              >
+              <button type="button" className={styles.fieldButton} onClick={openLocation}>
                 <div className={styles.field}>
                   <div className={styles.fieldHead}>
                     <span className={styles.fieldIcon}>📍</span>
-                    <span className={styles.fieldTitle}>
-                      {location ? location : "Location"}
-                    </span>
+                    <span className={styles.fieldTitle}>{location ? location : "Location"}</span>
                   </div>
 
                   <input
@@ -325,11 +324,7 @@ export default function HomePage() {
               </button>
 
               {locationOpen && (
-                <div
-                  className={styles.suggestPanel}
-                  role="listbox"
-                  aria-label="Suggested locations"
-                >
+                <div className={styles.suggestPanel} role="listbox" aria-label="Suggested locations">
                   <div className={styles.suggestTitle}>Suggested locations</div>
 
                   <div className={styles.suggestList}>
@@ -357,11 +352,7 @@ export default function HomePage() {
             <div className={styles.vline} />
 
             <div className={styles.calendarWrap} ref={calendarWrapRef}>
-              <button
-                type="button"
-                className={styles.fieldButton}
-                onClick={openCalendar}
-              >
+              <button type="button" className={styles.fieldButton} onClick={openCalendar}>
                 <div className={styles.field}>
                   <div className={styles.fieldHead}>
                     <span className={styles.fieldIcon}>📅</span>
@@ -379,27 +370,17 @@ export default function HomePage() {
                         <button
                           type="button"
                           className={styles.calArrow}
-                          onClick={() =>
-                            setCalendarBase((d) => addMonths(d, -1))
-                          }
+                          onClick={() => setCalendarBase((d) => addMonths(d, -1))}
                           aria-label="Previous month"
                         >
                           ‹
                         </button>
-                        <div className={styles.calTitle}>
-                          {monthLabel(calendarBase)}
-                        </div>
+                        <div className={styles.calTitle}>{monthLabel(calendarBase)}</div>
                         <div className={styles.calArrowSpacer} />
                       </div>
 
                       <div className={styles.calWeek}>
-                        <span>Su</span>
-                        <span>Mo</span>
-                        <span>Tu</span>
-                        <span>We</span>
-                        <span>Th</span>
-                        <span>Fr</span>
-                        <span>Sa</span>
+                        <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
                       </div>
 
                       <div className={styles.calGrid}>
@@ -428,15 +409,11 @@ export default function HomePage() {
                     <div className={styles.calendarMonth}>
                       <div className={styles.calendarHeader}>
                         <div className={styles.calArrowSpacer} />
-                        <div className={styles.calTitle}>
-                          {monthLabel(addMonths(calendarBase, 1))}
-                        </div>
+                        <div className={styles.calTitle}>{monthLabel(addMonths(calendarBase, 1))}</div>
                         <button
                           type="button"
                           className={styles.calArrow}
-                          onClick={() =>
-                            setCalendarBase((d) => addMonths(d, 1))
-                          }
+                          onClick={() => setCalendarBase((d) => addMonths(d, 1))}
                           aria-label="Next month"
                         >
                           ›
@@ -444,13 +421,7 @@ export default function HomePage() {
                       </div>
 
                       <div className={styles.calWeek}>
-                        <span>Su</span>
-                        <span>Mo</span>
-                        <span>Tu</span>
-                        <span>We</span>
-                        <span>Th</span>
-                        <span>Fr</span>
-                        <span>Sa</span>
+                        <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
                       </div>
 
                       <div className={styles.calGrid}>
@@ -482,24 +453,107 @@ export default function HomePage() {
 
             <div className={styles.vline} />
 
-            <div className={styles.field}>
-              <div className={styles.fieldHead}>
-                <span className={styles.fieldIcon}>👤</span>
-                <span className={styles.fieldTitle}>{guests}</span>
-              </div>
-              <input
-                className={styles.fieldInput}
-                value={guests}
-                onChange={(e) => setGuests(e.target.value)}
-                placeholder="Guests"
-              />
+            <div className={styles.guestsWrap} ref={guestsWrapRef}>
+              <button type="button" className={styles.fieldButton} onClick={openGuests}>
+                <div className={styles.field}>
+                  <div className={styles.fieldHead}>
+                    <span className={styles.fieldIcon}>👤</span>
+                    <span className={styles.fieldTitle}>{guestsLabel}</span>
+                  </div>
+                  <div className={styles.fieldHint}>Guests</div>
+                </div>
+              </button>
+
+              {guestsOpen && (
+                <div className={styles.guestsPanel} aria-label="Guests selector">
+                  <div className={styles.guestsRow}>
+                    <div className={styles.guestsText}>
+                      <div className={styles.guestsTitle}>Adults</div>
+                      <div className={styles.guestsSub}>Ages 13 or above</div>
+                    </div>
+
+                    <div className={styles.guestsStepper}>
+                      <button
+                        type="button"
+                        className={styles.stepBtn}
+                        onClick={() => dec(setAdults, adults, 1)}
+                        aria-label="Decrease adults"
+                        disabled={adults <= 1}
+                      >
+                        −
+                      </button>
+                      <div className={styles.stepVal}>{adults}</div>
+                      <button
+                        type="button"
+                        className={styles.stepBtn}
+                        onClick={() => inc(setAdults, adults, 20)}
+                        aria-label="Increase adults"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className={styles.guestsRow}>
+                    <div className={styles.guestsText}>
+                      <div className={styles.guestsTitle}>Children</div>
+                      <div className={styles.guestsSub}>Ages 2–12</div>
+                    </div>
+
+                    <div className={styles.guestsStepper}>
+                      <button
+                        type="button"
+                        className={styles.stepBtn}
+                        onClick={() => dec(setChildren, children, 0)}
+                        aria-label="Decrease children"
+                        disabled={children <= 0}
+                      >
+                        −
+                      </button>
+                      <div className={styles.stepVal}>{children}</div>
+                      <button
+                        type="button"
+                        className={styles.stepBtn}
+                        onClick={() => inc(setChildren, children, 20)}
+                        aria-label="Increase children"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className={styles.guestsRow}>
+                    <div className={styles.guestsText}>
+                      <div className={styles.guestsTitle}>Infants</div>
+                      <div className={styles.guestsSub}>Ages 0–2</div>
+                    </div>
+
+                    <div className={styles.guestsStepper}>
+                      <button
+                        type="button"
+                        className={styles.stepBtn}
+                        onClick={() => dec(setInfants, infants, 0)}
+                        aria-label="Decrease infants"
+                        disabled={infants <= 0}
+                      >
+                        −
+                      </button>
+                      <div className={styles.stepVal}>{infants}</div>
+                      <button
+                        type="button"
+                        className={styles.stepBtn}
+                        onClick={() => inc(setInfants, infants, 10)}
+                        aria-label="Increase infants"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
-            <button
-              className={styles.searchBtn}
-              type="submit"
-              aria-label="Search"
-            >
+            <button className={styles.searchBtn} type="submit" aria-label="Search">
               🔍
             </button>
           </form>
